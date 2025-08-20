@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Trader - Trading Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a0e17;
+            --secondary: #131b2e;
+            --accent: #00a8ff;
+            --text: #ffffff;
+            --rgb-1: #ff2d95;
+            --rgb-2: #00a8ff;
+            --rgb-3: #00ffcc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.8rem;
+            position: relative;
+        }
+        
+        .logo-text {
+            background: linear-gradient(45deg, var(--rgb-1), var(--rgb-2), var(--rgb-3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgb-text 5s linear infinite;
+            background-size: 200% auto;
+        }
+        
+        @keyframes rgb-text {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .rgb-effect {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--rgb-1), var(--rgb-2), var(--rgb-3));
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: rgb-move 10s linear infinite;
+        }
+        
+        @keyframes rgb-move {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, 30px) rotate(90deg); }
+            50% { transform: translate(100px, 0) rotate(180deg); }
+            75% { transform: translate(50px, -30px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--rgb-1), var(--rgb-2), var(--rgb-3));
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            background: transparent;
+            margin-right: 10px;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--rgb-1), var(--rgb-2));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, var(--rgb-2), var(--rgb-3));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.4);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--rgb-1), var(--rgb-2), var(--rgb-3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgb-text 5s linear infinite;
+            background-size: 200% auto;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 40px;
+            color: #a0a0a0;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .hero-image {
+            margin-top: 50px;
+            position: relative;
+        }
+        
+        .dashboard-img {
+            width: 100%;
+            max-width: 900px;
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background-color: var(--secondary);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .section-title p {
+            color: #a0a0a0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--rgb-1), var(--rgb-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card p {
+            color: #a0a0a0;
+        }
+        
+        /* Server Status Section */
+        .server-status {
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .status-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .status-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            width: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #00ff00;
+            display: inline-block;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        
+        .status-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-card p {
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            padding: 50px 0 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            text-decoration: none;
+            color: #a0a0a0;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--accent);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0a0a0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .status-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-text">Atlas Trader</span>
+                    <div class="rgb-effect"></div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Markets</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline">Login</button>
+                    <button class="btn btn-primary">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Advanced Trading Platform</h1>
+                <p>Atlas Trader offers professional-grade trading tools, real-time market data, and lightning-fast execution on a global scale.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Start Trading</button>
+                    <button class="btn btn-outline">Demo Account</button>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1640340434855-5f0c2e5a5d5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80" alt="Trading Dashboard" class="dashboard-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Powerful Features</h2>
+                <p>Our platform is packed with everything you need for successful trading</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Advanced Charts</h3>
+                    <p>Professional trading charts with dozens of technical indicators and drawing tools.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Execution</h3>
+                    <p>Execute trades in milliseconds with our high-performance trading engine.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Platform</h3>
+                    <p>Bank-level security with encryption and two-factor authentication.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Global Markets</h3>
+                    <p>Access to stocks, forex, cryptocurrencies, and commodities worldwide.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Trading</h3>
+                    <p>Trade on the go with our advanced mobile application for iOS and Android.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Automated Trading</h3>
+                    <p>Create and deploy automated trading strategies with our API.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Server Status Section -->
+    <section class="server-status">
+        <div class="container">
+            <div class="section-title">
+                <h2>Server Status</h2>
+                <p>Our high-availability infrastructure ensures 99.9% uptime</p>
+            </div>
+            <div class="status-cards">
+                <div class="status-card">
+                    <h3><span class="status-indicator"></span> Trading Server</h3>
+                    <p>Status: Operational</p>
+                    <p>Uptime: 99.98%</p>
+                    <p>Load: 24%</p>
+                </div>
+                <div class="status-card">
+                    <h3><span class="status-indicator"></span> Data Feed</h3>
+                    <p>Status: Operational</p>
+                    <p>Latency: 12ms</p>
+                    <p>Updates/sec: 5,243</p>
+                </div>
+                <div class="status-card">
+                    <h3><span class="status-indicator"></span> API Server</h3>
+                    <p>Status: Operational</p>
+                    <p>Requests: 342/sec</p>
+                    <p>Response: 28ms</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Atlas Trader</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Products</h3>
+                    <ul>
+                        <li><a href="#">Web Platform</a></li>
+                        <li><a href="#">Mobile Apps</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Automated Trading</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Atlas Trader. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation for the RGB effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const rgbEffect = document.querySelector('.rgb-effect');
+            
+            document.addEventListener('mousemove', function(e) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                rgbEffect.style.transform = `translate(${x * 50}px, ${y * 50}px)`;
+            });
+            
+            // Simulate server status updates
+            setInterval(() => {
+                const indicators = document.querySelectorAll('.status-indicator');
+                indicators.forEach(indicator => {
+                    // Randomly change status for demo purposes (in real app, this would come from API)
+                    if (Math.random() > 0.9) {
+                        indicator.style.backgroundColor = '#ff0000';
+                        indicator.style.boxShadow = '0 0 10px #ff0000';
+                    } else {
+                        indicator.style.backgroundColor = '#00ff00';
+                        indicator.style.boxShadow = '0 0 10px #00ff00';
+                    }
+                });
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
